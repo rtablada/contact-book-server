@@ -3,6 +3,7 @@ const cookie = require('cookie-parser');
 const bodyParser = require('body-parser');
 const helmet = require('helmet');
 const faker = require('faker');
+const cors = require('cors');
 const app = express();
 
 const savePeople = (res, people) => {
@@ -39,9 +40,12 @@ const getPeople = (req, res, reset = false) => {
 
   return peopleParsed;
 }
-
 app.use(cookie());
 app.use(bodyParser.json());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
 app.get('/people', (req, res) => {
   const peopleParsed = getPeople(req, res);
@@ -71,11 +75,12 @@ app.get('/people/:id', (req, res) => {
 app.post('/people', (req, res)  => {
   const { first, last, username } = req.body || {};
   const peopleParsed = getPeople(req, res);
-  peopleParsed.push(Object.assign({}, {
+  const newPerson = Object.assign({}, {
     first, last, username
-  }))
+  }, { id: peopleParsed.length.toString() });
+  savePeople(res, [ ...peopleParsed, newPerson ]);
 
-  res.send(peopleParsed);
+  res.send(newPerson);
 });
 
 app.put('/people/:id', (req, res) => {
