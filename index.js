@@ -77,7 +77,7 @@ app.post('/people', (req, res)  => {
   const peopleParsed = getPeople(req, res);
   const newPerson = Object.assign({}, {
     first, last, username
-  }, { id: peopleParsed.length.toString() });
+  }, { id: (peopleParsed.length + 1).toString() });
   savePeople(res, [ ...peopleParsed, newPerson ]);
 
   res.send(newPerson);
