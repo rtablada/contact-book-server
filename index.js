@@ -83,6 +83,26 @@ app.post('/people', (req, res)  => {
   res.send(newPerson);
 });
 
+app.patch('/people/:id', (req, res) => {
+  const { id } = req.params;
+  const { first, last, username } = req.body || {};
+  const peopleParsed = getPeople(req, res);
+
+  const people = peopleParsed.map((p) =>
+    p.id === id ?
+    Object.assign({}, p, { first, last, username }) :
+    p);
+  const person = people.find((p) => p.id === id);
+
+  savePeople(res, people);
+
+  if (!person) {
+    res.status(404).send();
+  }
+
+  res.send(person);
+});
+
 app.put('/people/:id', (req, res) => {
   const { id } = req.params;
   const { first, last, username } = req.body || {};
