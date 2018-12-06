@@ -11,9 +11,8 @@ const savePeople = (res, people) => {
 };
 
 const makeUser = () => ({
-  first: faker.name.firstName(),
-  last: faker.name.lastName(),
-  username: faker.internet.userName(),
+  name: faker.name.findName(),
+  email: faker.internet.exampleEmail(),
 });
 
 const makeManyUsers = (num = 1) => {
