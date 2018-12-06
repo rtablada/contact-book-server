@@ -40,6 +40,7 @@ const getPeople = (req, res, reset = false) => {
 
   return peopleParsed;
 }
+app.use(helmet());
 app.use(cookie());
 app.use(bodyParser.json());
 app.use(cors({
